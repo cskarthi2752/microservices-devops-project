@@ -1,0 +1,46 @@
+services:
+  user-service:
+    build: ./user-service
+    ports:
+      - "3001:3001"
+    restart: unless-stopped
+    networks:
+      - microservices-network
+
+  product-service:
+    build: ./product-service
+    ports:
+      - "3004:3002"
+    restart: unless-stopped
+    networks:
+      - microservices-network
+
+  order-service:
+    build: ./order-service
+    ports:
+      - "3003:3003"
+    restart: unless-stopped
+    networks:
+      - microservices-network
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    restart: unless-stopped
+    networks:
+      - microservices-network
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    ports:
+      - "9100:9100"
+    restart: unless-stopped
+    networks:
+      - microservices-network
+
+networks:
+  microservices-network:
+    driver: bridge
