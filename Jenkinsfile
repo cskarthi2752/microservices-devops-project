@@ -36,7 +36,7 @@ pipeline {
 
                     $urls = @(
                         "http://localhost:3001/health",
-                        "http://localhost:3004/",
+                        "http://localhost:3005/",
                         "http://localhost:3003/"
                     )
 
