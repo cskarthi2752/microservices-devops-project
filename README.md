@@ -39,3 +39,19 @@ Gmail delivery is not yet verified.
 ## Conclusion
 The microservices deployment and monitoring stack
 have passed the reported health and configuration checks.
+
+## Architecture Diagram
+
+``mermaid
+flowchart TD
+    A[Microservices Application] --> B[User Service]
+    A --> C[Product Service]
+    A --> D[Order Service]
+    B --> E[Prometheus]
+    C --> E
+    D --> E
+    F[Node Exporter] --> E
+    E --> G[Alert Rules]
+    G --> H[Alertmanager]
+    H --> I[Gmail Notifications]
+    E --> J[Grafana Dashboard]
