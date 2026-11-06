@@ -1,10 +1,18 @@
-
 const express = require("express");
+const client = require("prom-client");
 
 const app = express();
 app.use(express.json());
 
 const PORT = 3002;
+
+const register = new client.Registry();
+client.collectDefaultMetrics({ register });
+
+app.get("/metrics", async (req, res) => {
+    res.set("Content-Type", register.contentType);
+    res.end(await register.metrics());
+});
 
 app.get("/", (req, res) => {
     res.send("Product Service is Running!");

@@ -1,4 +1,4 @@
-services:
+﻿services:
   user-service:
     build: ./user-service
     ports:
@@ -29,6 +29,19 @@ services:
       - "9090:9090"
     volumes:
       - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring/alert_rules.yml:/etc/prometheus/alert_rules.yml:ro
+    restart: unless-stopped
+    networks:
+      - microservices-network
+
+  alertmanager:
+    image: prom/alertmanager:latest
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./monitoring/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+      - ./monitoring/secrets/gmail-app-password.txt:/etc/alertmanager/secrets/gmail-app-password.txt:ro
+      - ./monitoring/ca-bundle.pem:/etc/alertmanager/ca-bundle.pem:ro
     restart: unless-stopped
     networks:
       - microservices-network
@@ -41,6 +54,19 @@ services:
     networks:
       - microservices-network
 
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3004:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    restart: unless-stopped
+    networks:
+      - microservices-network
+
 networks:
   microservices-network:
     driver: bridge
+
+volumes:
+  grafana-data:

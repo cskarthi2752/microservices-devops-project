@@ -3,3 +3,15 @@ node_modules/
 .env
 *.log
 .DS_Store
+
+# Gmail credentials - NEVER commit
+monitoring/secrets/
+monitoring/gmail-app-password.txt
+
+# Local certificates
+monitoring/certs/
+monitoring/ca-bundle.pem
+
+# Temporary and backup files
+*.backup
+**/Dockerfile.txt
